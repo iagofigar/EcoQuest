@@ -7,10 +7,13 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text(
-          'Welcome!',
-          style: TextStyle(fontSize: 24),
-        ),
+        child: Column(
+          children: [
+            Padding(padding: EdgeInsets.only(top: 200)),
+            Image(image: AssetImage('assets/EcoQuestLogoNobg.png')),
+            Text('Welcome!', style: TextStyle(fontSize: 35)),
+          ],
+        )
       ),
     );
   }
