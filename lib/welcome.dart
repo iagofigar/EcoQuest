@@ -5,13 +5,18 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           children: [
-            Padding(padding: EdgeInsets.only(top: 200)),
-            Image(image: AssetImage('assets/EcoQuestLogoNobg.png')),
-            Text('Welcome!', style: TextStyle(fontSize: 35)),
+            const Padding(padding: EdgeInsets.only(top: 250)),
+            SizedBox(
+              width: 270,
+              height: 270,
+              child: Image.asset('assets/EcoQuestLogoNobg.png', fit: BoxFit.fill),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 40)),
+            const Text('Welcome!', style: TextStyle(fontSize: 35)),
           ],
         )
       ),

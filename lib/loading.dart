@@ -15,7 +15,7 @@ class LoadingPage extends StatelessWidget {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.only(top: 200)),
-              Container(
+              SizedBox(
                 width: 270,
                 height: 270,
                 child: Image.asset('assets/EcoQuestLogoNobg.png', fit: BoxFit.fill),
