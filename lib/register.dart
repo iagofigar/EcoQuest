@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.of(context).pushReplacementNamed('/verification');
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Sing up error")),
+        SnackBar(content: Text("Sign up error")),
       );
     }
   }
