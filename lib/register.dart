@@ -19,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await _supabaseClient.auth.signUp(
         email: _emailController.text,
         password: _passwordController.text,
-        data: {"username": _nameController.text, "created_at": DateTime.now().toUtc().toIso8601String()},
+        data: {"username": _nameController.text, "created_at": DateTime.now().toString()},
       );
 
       Navigator.of(context).pushReplacementNamed('/verification');
