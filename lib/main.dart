@@ -1,5 +1,6 @@
 import 'package:ecoquest/loading.dart';
 import 'package:ecoquest/login.dart';
+import 'package:ecoquest/qrScanner.dart';
 import 'package:ecoquest/welcome.dart';
 import 'package:ecoquest/register.dart';
 import 'package:flutter/material.dart';
