@@ -1,47 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _supabaseClient = Supabase.instance.client;
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     try {
-      final response = await _supabaseClient.auth.signInWithPassword(
+      await _supabaseClient.auth.signUp(
         email: _emailController.text,
         password: _passwordController.text,
+        data: {"username": _nameController.text, "created_at": DateTime.now().toUtc().toIso8601String()},
       );
 
-      Navigator.of(context).pushReplacementNamed('/home');
-
+      Navigator.of(context).pushReplacementNamed('/verification');
     } catch (error) {
-      if ((error as AuthException).message != 'Email not confirmed') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Sign in error")),
-        );
-      }
-      else {
-        Navigator.of(context).pushReplacementNamed('/verification');
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Sing up error")),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text('Login'))),
+      appBar: AppBar(
+        title: const Center(child: Text('Register')),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/login');
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: 'Name'),
+            ),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),
@@ -53,14 +61,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _login,
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/register');
-              },
+              onPressed: _register,
               child: const Text('Register'),
             ),
           ],
