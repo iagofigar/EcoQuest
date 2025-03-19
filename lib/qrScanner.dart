@@ -1,7 +1,26 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
-class QRScannerScreen extends StatelessWidget {
+class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
+
+  @override
+  _QRScannerScreenState createState() => _QRScannerScreenState();
+}
+
+class _QRScannerScreenState extends State<QRScannerScreen> {
+  Barcode? result;
+  MobileScannerController controller = MobileScannerController();
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller.stop();
+    }
+    controller.start();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,43 +39,49 @@ class QRScannerScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text(
-                'Aim at your friend’s QR code!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Aim at your friend\'s QR code!',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30),
-            Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 5,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.qr_code_scanner,
-                  size: 120,
-                  color: Colors.grey[700],
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 50.0),
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.green, width: 4.0),
+                ),
+                child: MobileScanner(
+                  controller: controller,
+                  onDetect: (barcodeCapture) {
+                    setState(() {
+                      result = barcodeCapture.barcodes.first;
+                    });
+                  },
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          /*
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: (result != null)
+                  ? Text('Barcode Type: ${result!.format}   Data: ${result!.rawValue}')
+                  : const Text('Scan a code'),
+            ),
+          )
+           */
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.green,
@@ -78,5 +103,11 @@ class QRScannerScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
