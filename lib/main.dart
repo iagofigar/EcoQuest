@@ -1,5 +1,6 @@
 import 'package:ecoquest/loading.dart';
 import 'package:ecoquest/login.dart';
+import 'package:ecoquest/rewards.dart';
 import 'package:ecoquest/welcome.dart';
 import 'package:ecoquest/register.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +25,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'EcoQuest',
-      initialRoute: '/login',
+      initialRoute: '/rewards',
       routes: {
 //        '/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
         '/home': (context) => const WelcomePage(),
+        '/rewards': (context) => const RewardsPage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
