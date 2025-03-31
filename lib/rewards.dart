@@ -54,7 +54,7 @@ class _RewardsPageState extends State<RewardsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Credits: $credits '),
+                Text('Credits: $credits ', style: const TextStyle(fontSize: 20)),
                 const Icon(Icons.stars),
                 const Padding(padding: EdgeInsets.only(bottom: 50)),
               ],

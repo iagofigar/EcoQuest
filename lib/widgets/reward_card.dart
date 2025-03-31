@@ -41,19 +41,23 @@ class RewardCard extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Container(
-                      width: 175,
+                    SizedBox(
+                      width: 200,
                       height: 50,
                       child: Text(
                           name ?? 'Subpar "copper" ingots',
                           softWrap: true, maxLines: 2,
-                          overflow: TextOverflow.ellipsis
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 16)
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text( '${priceS ?? '0'} '),
+                        Text(
+                            '${priceS ?? '0'} ',
+                            style: const TextStyle(fontSize: 16)
+                        ),
                         const Icon(Icons.stars),
                       ],
                     ),
