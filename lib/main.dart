@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'EcoQuest',
       initialRoute: '/welcome',
       routes: {
-        '/welcome': (context) => const WelcomePage(),
+//        '/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
