@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class Reward {
-  final String id;
+  final int id;
   String? name;
   String? description;
   int? price;
