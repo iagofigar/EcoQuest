@@ -13,18 +13,16 @@ class Reward {
   int? stock;
   int? limit;
 
-  Reward(this.id, this.name, this.description, this.price, this.stock, this.limit);
+  Reward({required this.id, this.name, this.description, this.price, this.stock, this.limit});
 
-  // factory Movie.fromMap(Map<String, dynamic> map) {
-  //   return Movie(
-  //     id: map['id'] as int,
-  //     title: map['title'] ?? '',
-  //     posterPath: map['poster_path'] ?? '',
-  //     backdropPath: map['backdrop_path'] ?? '',
-  //     overview: map['overview'] ?? '',
-  //     releaseDate: map['release_date'] ?? '',
-  //     voteAverage: map['vote_average']?.toDouble() ?? 0.0,
-  //     genreIds: List<int>.from(map['genre_ids']),
-  //   );
-  // }
+  factory Reward.fromMap(Map<String, dynamic> map) {
+    return Reward(
+      id: map['id'] as int,
+      name: map['name'] ?? '',
+      description: map['description'] ?? '',
+      price: map['price'] as int,
+      stock: map['stock'] as int,
+      limit: map['limit'] as int,
+    );
+  }
 }
