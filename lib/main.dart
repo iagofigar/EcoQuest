@@ -6,6 +6,7 @@ import 'package:ecoquest/register.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ecoquest/verification.dart';
+import 'package:ecoquest/map.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,13 +26,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'EcoQuest',
-      initialRoute: '/login',
+      initialRoute: '/map',
       routes: {
 //        '/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
         '/home': (context) => const WelcomePage(),
+        '/map': (context) => const MapPage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
