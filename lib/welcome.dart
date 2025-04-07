@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNextScreen();
+  }
+
+  _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 1), () {});
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
 
   @override
   Widget build(BuildContext context) {

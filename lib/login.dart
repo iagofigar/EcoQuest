@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
 
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/loading');
 
     } catch (error) {
       if ((error as AuthException).message != 'Email not confirmed') {
@@ -37,11 +37,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text('Login'))),
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text(
+          'EcoQuest',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),

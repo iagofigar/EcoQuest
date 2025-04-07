@@ -4,7 +4,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import "package:latlong2/latlong.dart";
 import "package:geolocator/geolocator.dart";
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ecoquest/models/PuntVerd_Model.dart';
+import 'package:ecoquest/models/puntVerd_model.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -136,6 +136,7 @@ class _MapPageState extends State<MapPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: '',
+
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

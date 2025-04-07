@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
-class LoadingPage extends StatelessWidget {
+class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
+
+  @override
+  _LoadingPageState createState() => _LoadingPageState();
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNextScreen();
+  }
+
+  _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 1), () {});
+    Navigator.of(context).pushReplacementNamed('/map');
+  }
 
   @override
   Widget build(BuildContext context) {
