@@ -83,6 +83,14 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text(
+          'EcoQuest',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true
+      ),
       body: _loading
           ? Center(child: CircularProgressIndicator())
           : Stack(
@@ -116,6 +124,25 @@ class _MapPageState extends State<MapPage> {
               ),
             ],
           ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.green,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '',
+          ),
+        ],
+      ),
     );
   }
 }

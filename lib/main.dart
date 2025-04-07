@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/verification': (context) => const VerificationPage(),
         '/home': (context) => const WelcomePage(),
         '/map': (context) => const MapPage(),
+        '/qrCode': (context) => const QRScannerScreen(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
