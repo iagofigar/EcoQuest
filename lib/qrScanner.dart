@@ -93,7 +93,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
+            icon: Icon(Icons.map),
             label: '',
           ),
           BottomNavigationBarItem(
