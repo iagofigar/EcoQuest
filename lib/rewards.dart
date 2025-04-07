@@ -2,6 +2,8 @@ import 'package:ecoquest/widgets/reward_card.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'models/reward_model.dart';
+
 class RewardsPage extends StatefulWidget {
   const RewardsPage({super.key});
 
@@ -11,17 +13,21 @@ class RewardsPage extends StatefulWidget {
 class _RewardsPageState extends State<RewardsPage> {
   final _supabaseClient = Supabase.instance.client;
   int credits = 0;
+  List<dynamic> rewards = [];
 
   @override
   void initState(){
     super.initState();
     _getUserCredits();
+    _getRewards();
   }
 
   Future<void> _getRewards() async {
     try {
-      final response = await _supabaseClient.from('rewards').select('name, description, price, stock, userLimit');
-      final rewardsData = response.data as List;
+      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit');
+      setState(() {
+        rewards = (response as List<dynamic>).map((reward) => Reward.fromMap(reward as Map<String, dynamic>)).toList();
+      });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error fetching rewards")),
@@ -41,9 +47,11 @@ class _RewardsPageState extends State<RewardsPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Rewards')),
+        title: const Text('Rewards'),
+        centerTitle: true,
         titleTextStyle: const TextStyle(fontSize: 20, color: Colors.white),
         backgroundColor: const Color(0xFF4CAF50),
       ),
@@ -59,28 +67,26 @@ class _RewardsPageState extends State<RewardsPage> {
                 const Padding(padding: EdgeInsets.only(bottom: 50)),
               ],
             ),
-            const Wrap(
+          Wrap(
               direction: Axis.horizontal,
               alignment: WrapAlignment.spaceEvenly,
               spacing: 10,
               runSpacing: 10,
               children: [
-                RewardCard(
-                  name: 'Subpar "copper" ingots',
-                  price: 1080,
-                  imageRoute: 'assets/placeholder.jpg',
-                ),
-                RewardCard(
-                  name: 'Nanni\'s Enemy\n"Tell Ea-nasir: Nanni sends the following message"',
-                  price: 50,
-                  imageRoute: 'assets/placeholder.jpg',
-                ),
-                RewardCard(
-                  name: 'The "Copper" Scroll',
-                  price: 100,
-                  imageRoute: 'assets/placeholder.jpg',
-                ),
-              ],
+                SizedBox(
+                  height: screenHeight*0.8,
+                  child:SingleChildScrollView(
+                    child: Column(
+                      children: rewards.map((reward) {
+                        return RewardCard(
+                          name: reward.name ?? "Nameless Reward",
+                          price: reward.price ?? 0,
+                          imageRoute: 'assets/placeholder.jpg',
+                        );
+                      }).toList(),
+                    ),
+                  )
+                )],
             ),
           ],
         ),
