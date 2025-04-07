@@ -20,9 +20,9 @@ class Reward {
       id: map['id'] as int,
       name: map['name'] ?? '',
       description: map['description'] ?? '',
-      price: map['price'] as int,
-      stock: map['stock'] as int,
-      limit: map['limit'] as int,
+      price: map['price'] ?? 0,
+      stock: map['stock'] ?? 0,
+      limit: map['limit'] ?? 0,
     );
   }
 }
