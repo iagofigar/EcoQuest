@@ -2,6 +2,7 @@ import 'package:ecoquest/loading.dart';
 import 'package:ecoquest/login.dart';
 import 'package:ecoquest/qrScanner.dart';
 import 'package:ecoquest/rewards.dart';
+import 'package:ecoquest/user.dart';
 import 'package:ecoquest/welcome.dart';
 import 'package:ecoquest/register.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'EcoQuest',
-      initialRoute: '/',
+      initialRoute: '/user',
       routes: {
         '/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         '/loading': (context) => const LoadingPage(),
         '/qrScanner': (context) => const QRScannerScreen(),
         '/rewards' : (context) => const RewardsPage(),
-        
+        '/user' : (context) => const ProfilePage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
