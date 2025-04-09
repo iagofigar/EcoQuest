@@ -45,6 +45,20 @@ class _RewardsPageState extends State<RewardsPage> {
     }
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/map');
+        break;
+    // case 2:
+    //   Navigator.pushReplacementNamed(context, '/login');
+    //   break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;

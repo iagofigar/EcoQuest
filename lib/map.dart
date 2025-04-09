@@ -80,6 +80,20 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/map');
+        break;
+      // case 2:
+      //   Navigator.pushReplacementNamed(context, '/login');
+      //   break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,6 +142,10 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.green,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: 1,
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
@@ -136,7 +154,6 @@ class _MapPageState extends State<MapPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: '',
-
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
