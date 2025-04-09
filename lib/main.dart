@@ -1,6 +1,7 @@
 import 'package:ecoquest/loading.dart';
 import 'package:ecoquest/login.dart';
 import 'package:ecoquest/qrScanner.dart';
+import 'package:ecoquest/rewardDetails.dart';
 import 'package:ecoquest/rewards.dart';
 import 'package:ecoquest/welcome.dart';
 import 'package:ecoquest/register.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ecoquest/verification.dart';
 import 'package:ecoquest/map.dart';
+
+import 'models/reward_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,13 +32,16 @@ class MyApp extends StatelessWidget {
       title: 'EcoQuest',
       initialRoute: '/rewards',
       routes: {
-        '/': (context) => const WelcomePage(),
+        //'/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
         '/loading': (context) => const LoadingPage(),
         '/qrScanner': (context) => const QRScannerScreen(),
         '/rewards' : (context) => const RewardsPage(),
+        '/rewardDetails': (context) => RewardDetailsPage(
+          reward: ModalRoute.of(context)!.settings.arguments as Reward,
+        ),
         '/map': (context) => const MapPage(),
       },
       theme: ThemeData(

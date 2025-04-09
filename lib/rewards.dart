@@ -79,9 +79,7 @@ class _RewardsPageState extends State<RewardsPage> {
                     child: Column(
                       children: rewards.map((reward) {
                         return RewardCard(
-                          name: reward.name ?? "Nameless Reward",
-                          price: reward.price ?? 0,
-                          imageRoute: 'assets/placeholder.jpg',
+                          reward: reward,
                         );
                       }).toList(),
                     ),
