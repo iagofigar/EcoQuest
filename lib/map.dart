@@ -65,7 +65,7 @@ class _MapPageState extends State<MapPage> {
   Future<void> getPuntsVerds() async {
     final result = await Supabase.instance.client
         .from('punts_verds')
-        .select('name, x, y')
+        .select('name, x, y, address')
         .execute();
 
     if (result.data != null) {
@@ -84,9 +84,6 @@ class _MapPageState extends State<MapPage> {
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/rewards');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/map');
         break;
       // case 2:
       //   Navigator.pushReplacementNamed(context, '/login');
@@ -124,15 +121,42 @@ class _MapPageState extends State<MapPage> {
                     _puntsVerds
                         .map((puntVerd) => Marker(
                               point: LatLng(puntVerd.x, puntVerd.y),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(8),
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Información del Punto Verde'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Nombre: ${puntVerd.name}'),
+                                    Text('Dirección: ${puntVerd.address}'), // Cambia esto según sea necesario
+                                  ],
                                 ),
-                                child: Icon(Icons.recycling, color: Colors.white),
-                              ),
-                            ))
-                        .toList(),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cerrar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.recycling, color: Colors.white),
+                        ),
+                      ),
+                    )).toList(),
                   ),
                 ],
               ),
