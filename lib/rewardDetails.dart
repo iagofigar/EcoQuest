@@ -74,6 +74,33 @@ class RewardDetailsPage extends StatelessWidget {
               reward.description ?? 'No Description',
               style: const TextStyle(fontSize: 20),
             ),
+            Center(
+              child:
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF4CAF50)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.symmetric(vertical: 26.0, horizontal: 42.0),
+                  ),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(45.0),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child:
+                const Text(
+                  'Cash out reward!',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            )
+
           ],
         ),
       ),

@@ -16,7 +16,7 @@ class RewardCard extends StatelessWidget {
         Navigator.pushNamed(
           context,
           '/rewardDetails',
-          arguments: reward, // Pass the Reward object directly
+          arguments: reward,
         );
       },
       child: IntrinsicWidth(
