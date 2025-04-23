@@ -185,6 +185,17 @@ class _MapPageState extends State<MapPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/quests'); // Replace '/quests' with the actual route for the Quests screen
+        },
+        backgroundColor: Colors.green,
+        label: const Text(
+          'Today\'s quests',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
