@@ -24,7 +24,7 @@ class _RewardsPageState extends State<RewardsPage> {
 
   Future<void> _getRewards() async {
     try {
-      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit').order('id', ascending: true);
+      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit, imageUrl').order('id', ascending: true);
       setState(() {
         rewards = (response as List<dynamic>).map((reward) => Reward.fromMap(reward as Map<String, dynamic>)).toList();
       });
@@ -42,6 +42,20 @@ class _RewardsPageState extends State<RewardsPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error fetching user credits")),
       );
+    }
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/map');
+        break;
+    // case 2:
+    //   Navigator.pushReplacementNamed(context, '/login');
+    //   break;
     }
   }
 
@@ -74,7 +88,7 @@ class _RewardsPageState extends State<RewardsPage> {
               runSpacing: 10,
               children: [
                 SizedBox(
-                  height: screenHeight*0.8,
+                  height: screenHeight*0.75,
                   child:SingleChildScrollView(
                     child: Column(
                       children: rewards.map((reward) {
@@ -88,6 +102,29 @@ class _RewardsPageState extends State<RewardsPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.green,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: 1,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '',
+          ),
+        ],
       ),
     );
   }

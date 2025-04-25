@@ -41,8 +41,8 @@ class RewardCard extends StatelessWidget {
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
                     ),
-                    child: Image.asset(
-                      'assets/placeholder.jpg',
+                    child: Image.network(
+                      reward.imageUrl ?? 'https://xqgmvnldsdgbkryvwdpt.supabase.co/storage/v1/object/public/rewards//placeholder.jpg',
                       fit: BoxFit.fill,
                     ),
                   ),

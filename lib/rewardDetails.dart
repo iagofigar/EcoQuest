@@ -28,8 +28,8 @@ class RewardDetailsPage extends StatelessWidget {
               children: [
                 SizedBox(width: 150 ,height: 200,
                 child:
-                Image.asset(
-                  'assets/placeholder.jpg',
+                Image.network(
+                  reward.imageUrl ?? 'https://xqgmvnldsdgbkryvwdpt.supabase.co/storage/v1/object/public/rewards//placeholder.jpg',
                   fit: BoxFit.fill,
                 ),
                 ),

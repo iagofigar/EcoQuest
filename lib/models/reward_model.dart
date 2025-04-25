@@ -12,8 +12,9 @@ class Reward {
   int? price;
   int? stock;
   int? limit;
+  String? imageUrl;
 
-  Reward({required this.id, this.name, this.description, this.price, this.stock, this.limit});
+  Reward({required this.id, this.name, this.description, this.price, this.stock, this.limit, this.imageUrl});
 
   factory Reward.fromMap(Map<String, dynamic> map) {
     return Reward(
@@ -23,6 +24,7 @@ class Reward {
       price: map['price'] ?? 0,
       stock: map['stock'] ?? 0,
       limit: map['limit'] ?? 0,
+      imageUrl: map['imageUrl'],
     );
   }
 }
