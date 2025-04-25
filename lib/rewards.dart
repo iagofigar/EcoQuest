@@ -24,7 +24,7 @@ class _RewardsPageState extends State<RewardsPage> {
 
   Future<void> _getRewards() async {
     try {
-      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit');
+      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit').order('id', ascending: true);
       setState(() {
         rewards = (response as List<dynamic>).map((reward) => Reward.fromMap(reward as Map<String, dynamic>)).toList();
       });

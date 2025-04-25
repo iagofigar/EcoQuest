@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'models/reward_model.dart';
 
 class RewardDetailsPage extends StatelessWidget {
@@ -74,7 +75,9 @@ class RewardDetailsPage extends StatelessWidget {
               reward.description ?? 'No Description',
               style: const TextStyle(fontSize: 20),
             ),
-            Center(
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            Align(
+              alignment: Alignment.bottomCenter,
               child:
               TextButton(
                 style: ButtonStyle(
@@ -88,7 +91,64 @@ class RewardDetailsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context, builder: (BuildContext context)
+                  {
+                    return AlertDialog(
+                      content: const Text(
+                          'Are you sure you want to cash out this reward?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final supabase = Supabase.instance.client;
+                            if ((reward.price ?? 0) <= 100) {
+                              if ((reward.stock ?? 0) > 0) {
+                                final response = await supabase
+                                    .from('rewards')
+                                    .update({'stock': (reward.stock ?? 0) - 1})
+                                    .eq('id', reward.id);
+
+                                print("WHAT IS RESPONSE.DATA ${response.data}");
+                                if (response.data == null) {
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text(
+                                        'Reward cashed out successfully!')),
+                                  );
+                                } else {
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text(
+                                        'Unexpected error occurred, try again later!')),
+                                  );
+                                }
+                              } else {
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text(
+                                      'Sorry, reward is currently out of stock!')),
+                                );
+                              }
+                            }else{
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text(
+                              'Not enough credits to cash out this reward!')),
+                              );
+                            }
+                          },
+                          child: const Text('Confirm'),
+                        ),
+                      ],
+                    );
+                  });
+                },
                 child:
                 const Text(
                   'Cash out reward!',
