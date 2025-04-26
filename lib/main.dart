@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ecoquest/verification.dart';
 import 'package:ecoquest/map.dart';
+import 'package:ecoquest/quests.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/qrScanner': (context) => const QRScannerScreen(),
         '/rewards' : (context) => const RewardsPage(),
         '/map': (context) => const MapPage(),
+        '/quests': (context) => const QuestsPage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
