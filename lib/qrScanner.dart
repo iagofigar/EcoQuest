@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart' as app_provider;
+import 'package:ecoquest/providers/user_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
@@ -12,6 +16,7 @@ class QRScannerScreen extends StatefulWidget {
 class _QRScannerScreenState extends State<QRScannerScreen> {
   Barcode? result;
   MobileScannerController controller = MobileScannerController();
+  bool isDetecting = true;
 
   @override
   void reassemble() {
@@ -22,18 +27,67 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     controller.start();
   }
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/rewards');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/map');
-        break;
-    // case 2:
-    //   Navigator.pushReplacementNamed(context, '/login');
-    //   break;
+  void addFriend(String scannedValue) async {
+    final currentUserId = app_provider.Provider.of<UserProvider>(context, listen: false).id;
+
+    if (currentUserId == null) {
+      _showPopup('User is not logged in.');
+      return;
     }
+
+    if (currentUserId == scannedValue) {
+      _showPopup('Cannot add yourself as a friend!');
+      return;
+    }
+
+    try {
+      final supabase = Supabase.instance.client;
+
+      final response = await supabase
+          .from('friends')
+          .select()
+          .or('user1_id.eq.$currentUserId,user2_id.eq.$currentUserId')
+          .or('user1_id.eq.$scannedValue,user2_id.eq.$scannedValue');
+
+      if (response != null && response.isNotEmpty) {
+        _showPopup('You are already friends with this user!');
+        return;
+      }
+
+      final uuid = const Uuid().v4();
+
+      await supabase.from('friends').insert({
+        'user1_id': currentUserId,
+        'user2_id': scannedValue,
+      });
+
+      _showPopup('Friend added successfully!');
+    } catch (e) {
+      _showPopup('Error adding friend: $e');
+    }
+  }
+
+  void _showPopup(String message) {
+    Navigator.pushReplacementNamed(context, '/user');
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            message,
+            style: const TextStyle(fontSize: 18), // Set a larger font size
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -77,24 +131,16 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 child: MobileScanner(
                   controller: controller,
                   onDetect: (barcodeCapture) {
-                    setState(() {
-                      result = barcodeCapture.barcodes.first;
-                    });
+                    final scannedValue = barcodeCapture.barcodes.first.rawValue;
+                    if (scannedValue != null && isDetecting) {
+                      isDetecting = false; // Prevent multiple scans
+                      addFriend(scannedValue); // Call addFriend with the scanned value
+                    }
                   },
                 ),
               ),
             ),
           ),
-          /*
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? Text('Barcode Type: ${result!.format}   Data: ${result!.rawValue}')
-                  : const Text('Scan a code'),
-            ),
-          )
-           */
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -103,7 +149,16 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         unselectedItemColor: Colors.black54,
         selectedFontSize: 0,
         unselectedFontSize: 0,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/rewards');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/map');
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
