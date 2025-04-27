@@ -1,10 +1,14 @@
 import 'package:ecoquest/loading.dart';
 import 'package:ecoquest/login.dart';
+import 'package:ecoquest/providers/user_provider.dart';
+import 'package:ecoquest/qrCode.dart';
 import 'package:ecoquest/qrScanner.dart';
 import 'package:ecoquest/rewards.dart';
+import 'package:ecoquest/user.dart';
 import 'package:ecoquest/welcome.dart';
 import 'package:ecoquest/register.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ecoquest/verification.dart';
 import 'package:ecoquest/map.dart';
@@ -20,7 +24,12 @@ void main() async {
       url: 'https://xqgmvnldsdgbkryvwdpt.supabase.co',
       anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxZ212bmxkc2RnYmtyeXZ3ZHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4MTA3NTIsImV4cCI6MjA1NTM4Njc1Mn0.uPgUWiyFPXKYmG9b4W75OQKC40j64WRAFyQTHMSHmgQ'
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => UserProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,11 +47,14 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
         '/loading': (context) => const LoadingPage(),
-        '/qrScanner': (context) => const QRScannerScreen(),
         '/rewards' : (context) => const RewardsPage(),
         '/map': (context) => const MapPage(),
         '/quests': (context) => const QuestsPage(),
         '/questDetails': (context) => QuestDetailsPage(quest: ModalRoute.of(context)!.settings.arguments as Quest,),
+        '/home': (context) => const WelcomePage(),
+        '/qrCode': (context) => const QRCodeScreen(),
+        '/qrScanner': (context) => const QRScannerScreen(),
+        '/user' : (context) => const ProfilePage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),

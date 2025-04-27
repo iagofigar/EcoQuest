@@ -1,5 +1,7 @@
+import 'package:ecoquest/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart' as app_provider;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,16 +21,35 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
       Navigator.of(context).pushReplacementNamed('/loading');
 
+      // Save user data in UserProvider
+      final user = response.user;
+      // log
+      if (user != null) {
+        final userDataResponse = await _supabaseClient
+            .from('users')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+        final userData = userDataResponse;
+        app_provider.Provider.of<UserProvider>(context, listen: false).setUser(
+          id: userData['id'],
+          username: userData['username'] ?? 'Unknown',
+          email: userData['email'] ?? '',
+          experience: userData['experience']?.toDouble() ?? 0.0,
+          level: userData['level'] ?? 1,
+          credits: userData['credits'] ?? 0,
+        );
+      }
+
+      Navigator.of(context).pushReplacementNamed('/loading');
     } catch (error) {
       if ((error as AuthException).message != 'Email not confirmed') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Sign in error")),
         );
-      }
-      else {
+      } else {
         Navigator.of(context).pushReplacementNamed('/verification');
       }
     }
