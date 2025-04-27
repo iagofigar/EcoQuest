@@ -32,14 +32,31 @@ class _QuestsPageState extends State<QuestsPage> {
 
   Future<void> _fetchQuests() async {
     try {
-      final response = await _supabaseClient.from('daily_assigned_quests').select('id, quests(name, description, reward)');
+      final response = await _supabaseClient
+          .from('daily_assigned_quests')
+          .select('id, quests(name, description, reward)');
+      final user = _supabaseClient.auth.currentUser;
+
+      if (user == null) return;
+
+      final progressResponse = await _supabaseClient
+          .from('user_quest_progress')
+          .select('daily_quest_id, completed')
+          .eq('userId', user.id);
+
+      final progressMap = {
+        for (var progress in progressResponse as List<dynamic>)
+          progress['daily_quest_id']: progress['completed'] as bool
+      };
+
       setState(() {
-        quests.addAll((response as List<dynamic>).map((quest) => Quest.fromMap(quest['id'], quest['quests'] as Map<String, dynamic>)).toList());
+        quests.addAll((response as List<dynamic>).map((quest) {
+          final isCompleted = progressMap[quest['id']] ?? false;
+          return Quest.fromMap(quest['id'], quest['quests'] as Map<String, dynamic>, isCompleted);
+        }).toList());
       });
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
+      print(error.toString());
     }
   }
 
@@ -95,9 +112,8 @@ class _QuestsPageState extends State<QuestsPage> {
           children: [
             ...quests.map((quest) {
               return QuestCard(
-                name: quest.name ?? "",
-                description: quest.description ?? "",
-                reward: quest.reward ?? 0,
+                quest: quest,
+                isCompleted: quest.isCompleted,
               );
             }),
             const SizedBox(height: 20),

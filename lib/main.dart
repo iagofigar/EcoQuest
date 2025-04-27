@@ -9,6 +9,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ecoquest/verification.dart';
 import 'package:ecoquest/map.dart';
 import 'package:ecoquest/quests.dart';
+import 'package:ecoquest/questDetails.dart';
+
+import 'package:ecoquest/models/quest_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/rewards' : (context) => const RewardsPage(),
         '/map': (context) => const MapPage(),
         '/quests': (context) => const QuestsPage(),
+        '/questDetails': (context) => QuestDetailsPage(quest: ModalRoute.of(context)!.settings.arguments as Quest,),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
