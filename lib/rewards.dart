@@ -37,7 +37,7 @@ class _RewardsPageState extends State<RewardsPage> {
   Future<void> _getUserCredits() async {
     try {
       final response = await _supabaseClient.from('users').select('credits').match({'id': _supabaseClient.auth.currentUser!.id});
-      credits = response.data as int;
+      credits = response[0]['credits'] as int;
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error fetching user credits")),
@@ -47,15 +47,12 @@ class _RewardsPageState extends State<RewardsPage> {
 
   void _onItemTapped(int index) {
     switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/rewards');
-        break;
       case 1:
         Navigator.pushReplacementNamed(context, '/map');
         break;
-    // case 2:
-    //   Navigator.pushReplacementNamed(context, '/login');
-    //   break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/user');
+        break;
     }
   }
 
@@ -109,7 +106,7 @@ class _RewardsPageState extends State<RewardsPage> {
         unselectedItemColor: Colors.black54,
         selectedFontSize: 0,
         unselectedFontSize: 0,
-        currentIndex: 1,
+        currentIndex: 0,
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
