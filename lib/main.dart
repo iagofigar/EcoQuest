@@ -3,6 +3,7 @@ import 'package:ecoquest/login.dart';
 import 'package:ecoquest/providers/user_provider.dart';
 import 'package:ecoquest/qrCode.dart';
 import 'package:ecoquest/qrScanner.dart';
+import 'package:ecoquest/rewardDetails.dart';
 import 'package:ecoquest/rewards.dart';
 import 'package:ecoquest/user.dart';
 import 'package:ecoquest/welcome.dart';
@@ -16,6 +17,8 @@ import 'package:ecoquest/quests.dart';
 import 'package:ecoquest/questDetails.dart';
 
 import 'package:ecoquest/models/quest_model.dart';
+
+import 'models/reward_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,12 +45,15 @@ class MyApp extends StatelessWidget {
       title: 'EcoQuest',
       initialRoute: '/',
       routes: {
-        '/': (context) => const WelcomePage(),
+        //'/': (context) => const WelcomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/verification': (context) => const VerificationPage(),
         '/loading': (context) => const LoadingPage(),
         '/rewards' : (context) => const RewardsPage(),
+        '/rewardDetails': (context) => RewardDetailsPage(
+          reward: ModalRoute.of(context)!.settings.arguments as Reward,
+        ),
         '/map': (context) => const MapPage(),
         '/quests': (context) => const QuestsPage(),
         '/questDetails': (context) => QuestDetailsPage(quest: ModalRoute.of(context)!.settings.arguments as Quest,),

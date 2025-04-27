@@ -24,7 +24,7 @@ class _RewardsPageState extends State<RewardsPage> {
 
   Future<void> _getRewards() async {
     try {
-      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit');
+      final response = await _supabaseClient.from('rewards').select('id, name, description, price, stock, userLimit, imageUrl').order('id', ascending: true);
       setState(() {
         rewards = (response as List<dynamic>).map((reward) => Reward.fromMap(reward as Map<String, dynamic>)).toList();
       });
@@ -88,14 +88,12 @@ class _RewardsPageState extends State<RewardsPage> {
               runSpacing: 10,
               children: [
                 SizedBox(
-                  height: screenHeight*0.8,
+                  height: screenHeight*0.75,
                   child:SingleChildScrollView(
                     child: Column(
                       children: rewards.map((reward) {
                         return RewardCard(
-                          name: reward.name ?? "Nameless Reward",
-                          price: reward.price ?? 0,
-                          imageRoute: 'assets/placeholder.jpg',
+                          reward: reward,
                         );
                       }).toList(),
                     ),
@@ -104,6 +102,29 @@ class _RewardsPageState extends State<RewardsPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.green,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: 1,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '',
+          ),
+        ],
       ),
     );
   }
