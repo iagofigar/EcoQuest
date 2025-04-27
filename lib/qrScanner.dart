@@ -22,6 +22,20 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     controller.start();
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/map');
+        break;
+    // case 2:
+    //   Navigator.pushReplacementNamed(context, '/login');
+    //   break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +101,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         backgroundColor: Colors.green,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.star),

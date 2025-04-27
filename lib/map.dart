@@ -65,7 +65,7 @@ class _MapPageState extends State<MapPage> {
   Future<void> getPuntsVerds() async {
     final result = await Supabase.instance.client
         .from('punts_verds')
-        .select('name, x, y')
+        .select('name, x, y, address')
         .execute();
 
     if (result.data != null) {
@@ -77,6 +77,17 @@ class _MapPageState extends State<MapPage> {
         _puntsVerds = puntsVerds;
       }
       );
+    }
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      // case 2:
+      //   Navigator.pushReplacementNamed(context, '/login');
+      //   break;
     }
   }
 
@@ -110,15 +121,42 @@ class _MapPageState extends State<MapPage> {
                     _puntsVerds
                         .map((puntVerd) => Marker(
                               point: LatLng(puntVerd.x, puntVerd.y),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(8),
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Información del Punto Verde'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Nombre: ${puntVerd.name}'),
+                                    Text('Dirección: ${puntVerd.address}'), // Cambia esto según sea necesario
+                                  ],
                                 ),
-                                child: Icon(Icons.recycling, color: Colors.white),
-                              ),
-                            ))
-                        .toList(),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cerrar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.recycling, color: Colors.white),
+                        ),
+                      ),
+                    )).toList(),
                   ),
                 ],
               ),
@@ -128,6 +166,10 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.green,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: 1,
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
@@ -136,7 +178,6 @@ class _MapPageState extends State<MapPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: '',
-
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -144,6 +185,17 @@ class _MapPageState extends State<MapPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/quests'); // Replace '/quests' with the actual route for the Quests screen
+        },
+        backgroundColor: Colors.green,
+        label: const Text(
+          'Today\'s quests',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
