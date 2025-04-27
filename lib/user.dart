@@ -76,6 +76,17 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/rewards');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/map');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final userProvider = app_provider.Provider.of<UserProvider>(context);
@@ -188,10 +199,26 @@ class _ProfilePageState extends State<ProfilePage> {
         child: const Icon(Icons.person_add),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.green,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: 2,
+        onTap: _onItemTapped,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '',
+          ),
         ],
       ),
     );
