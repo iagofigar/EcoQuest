@@ -70,27 +70,64 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text('Login',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: const Icon(Icons.email),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
             ),
+            const SizedBox(height: 20),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: const Icon(Icons.lock),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
               obscureText: true,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _login,
-              child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green, // Button color
+                foregroundColor: Colors.white, // Text color
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16), // Increased vertical padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30), // Rounded corners
+                ),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacementNamed('/register');
               },
-              child: const Text('Register'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Button color
+                foregroundColor: Colors.white, // Text color
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16), // Increased vertical padding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30), // Rounded corners
+                ),
+              ),
+              child: const Text(
+                'Register',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
