@@ -17,6 +17,7 @@ class _QuestsPageState extends State<QuestsPage> {
   late Timer _timer;
   Duration _timeUntilMidnight = Duration.zero;
 
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +33,13 @@ class _QuestsPageState extends State<QuestsPage> {
 
   Future<void> _fetchQuests() async {
     try {
+      final today = DateTime.now();
+      final formattedDate = DateTime(today.year, today.month, today.day);
+
       final response = await _supabaseClient
           .from('daily_assigned_quests')
-          .select('id, quests(name, description, reward)');
+          .select('id, quests(name, description, reward)')
+          .eq('assigned_date', formattedDate.toIso8601String());
       final user = _supabaseClient.auth.currentUser;
 
       if (user == null) return;
@@ -87,14 +92,12 @@ class _QuestsPageState extends State<QuestsPage> {
       case 0:
         Navigator.pushReplacementNamed(context, '/rewards');
         break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/map');
+      case 2:
+        Navigator.pushReplacementNamed(context, '/user');
         break;
-      // case 2:
-      //   Navigator.pushReplacementNamed(context, '/login');
-      //   break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

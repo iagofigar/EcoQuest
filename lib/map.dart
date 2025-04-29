@@ -85,9 +85,6 @@ class _MapPageState extends State<MapPage> {
       case 0:
         Navigator.pushReplacementNamed(context, '/rewards');
         break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/map');
-        break;
       case 2:
         Navigator.pushReplacementNamed(context, '/user');
         break;
