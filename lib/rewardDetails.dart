@@ -4,14 +4,30 @@ import 'models/reward_model.dart';
 
 class RewardDetailsPage extends StatelessWidget {
   final Reward reward;
+  final _supabaseClient = Supabase.instance.client;
+  int credits = 0;
 
-  const RewardDetailsPage({
+  RewardDetailsPage({
     Key? key,
     required this.reward,
   }) : super(key: key);
 
+  void initState() {
+    _getUserCredits();
+  }
+
+  Future<void> _getUserCredits() async {
+    try {
+      final response = await _supabaseClient.from('users').select('credits').match({'id': _supabaseClient.auth.currentUser!.id});
+      credits = response[0]['credits'] as int;
+    } catch (error) {
+      print("Error fetching user credits: $error");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getUserCredits();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reward Details'),
@@ -107,19 +123,26 @@ class RewardDetailsPage extends StatelessWidget {
                         TextButton(
                           onPressed: () async {
                             final supabase = Supabase.instance.client;
-                            if ((reward.price ?? 0) <= 100) {
+                            print("WHAT IS CREDITS $credits");
+                            if ((reward.price ?? 0) <= credits) {
                               if ((reward.stock ?? 0) > 0) {
                                 final response = await supabase
                                     .from('rewards')
                                     .update({'stock': (reward.stock ?? 0) - 1})
-                                    .eq('id', reward.id);
+                                    .eq('id', reward.id)
+                                    .execute();
 
                                 print("WHAT IS RESPONSE.DATA ${response.data}");
                                 if (response.data == null) {
+                                  await supabase
+                                      .from('users')
+                                      .update({'credits': credits - (reward.price ?? 0)})
+                                      .eq('id', supabase.auth.currentUser!.id)
+                                      .execute();
+
                                   Navigator.of(context).pop();
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text(
-                                        'Reward cashed out successfully!')),
+                                    const SnackBar(content: Text('Reward cashed out successfully!')),
                                   );
                                 } else {
                                   Navigator.of(context).pop();
