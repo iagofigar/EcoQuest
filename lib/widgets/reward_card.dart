@@ -3,21 +3,24 @@ import '../models/reward_model.dart';
 
 class RewardCard extends StatelessWidget {
   final Reward reward;
+  final VoidCallback onCreditsUpdated;
 
   const RewardCard({
     Key? key,
     required this.reward,
+    required this.onCreditsUpdated,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
+      onTap: () async {
+        await Navigator.pushNamed(
           context,
           '/rewardDetails',
           arguments: reward,
         );
+        onCreditsUpdated();
       },
       child: IntrinsicWidth(
         child: IntrinsicHeight(
