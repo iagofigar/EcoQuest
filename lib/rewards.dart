@@ -37,7 +37,10 @@ class _RewardsPageState extends State<RewardsPage> {
   Future<void> _getUserCredits() async {
     try {
       final response = await _supabaseClient.from('users').select('credits').match({'id': _supabaseClient.auth.currentUser!.id});
-      credits = response[0]['credits'] as int;
+      setState(() {
+        credits = response[0]['credits'] as int;
+        
+      });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Error fetching user credits")),
@@ -91,6 +94,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       children: rewards.map((reward) {
                         return RewardCard(
                           reward: reward,
+                          onCreditsUpdated: _getUserCredits,
                         );
                       }).toList(),
                     ),
